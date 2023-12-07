@@ -1,9 +1,19 @@
+const { program } = require("commander");
+
+program
+  .option("-a, --action <type>", "choose action")
+  .option("-i, --id <type>", "user id")
+  .option("-n, --name <type>", "user name")
+  .option("-e, --email <type>", "user email")
+  .option("-p, --phone <type>", "user phone");
+program.parse();
+const options = program.opts();
 const contacts = require("./contacts");
 const invokeAction = async ({ action, id, name, email, phone }) => {
   switch (action) {
     case "list":
       const allContacts = await contacts.listContacts();
-      return console.log(allContacts);
+      return console.table(allContacts);
     case "get":
       const oneContact = await contacts.getContactById(id);
       return console.log(oneContact);
@@ -19,12 +29,4 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
       console.warn("\x1B[31m Unknown action type!");
   }
 };
-// invokeAction({ action: "list" });
-// invokeAction({ action: "get", id: "1DEXoP8AuCGYc1YgoQ6hw" });
-// invokeAction({
-//   action: "add",
-//   name: "kfjnfvj ghfjfkf",
-//   email: "gjgn@fgg.vbg",
-//   phone: "(186) 568-3720",
-// });
-invokeAction({ action: "remove", id: "drsAJ4SHPYqZeG-83QTVW" });
+invokeAction(options);
